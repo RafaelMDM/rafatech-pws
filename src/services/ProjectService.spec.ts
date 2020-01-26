@@ -70,4 +70,43 @@ describe('Project Service', () => {
       expect.objectContaining({ title: 'jest' }),
     ]);
   });
+
+  it('should be able to update existing Projects', async () => {
+    const ps = new ProjectService();
+    const existingProject = {
+      name: 'Teste',
+      license: 'MIT',
+      releaseDate: new Date(),
+      tags: ['teste', 'jest'],
+    };
+    await ps.create(existingProject);
+    const { _id: createdId } = await Project.findOne({ name: 'teste' });
+    const requestBody = {
+      _id: createdId,
+      name: 'Teste',
+      license: 'GNU',
+      description: 'Testando atualização de projeto',
+      tags: ['teste', 'jest', 'novaTag'],
+    };
+    await ps.update(requestBody);
+
+    const createdTags = await Tag.find({}).lean();
+    expect(createdTags).toEqual([
+      expect.objectContaining({ title: 'teste' }),
+      expect.objectContaining({ title: 'jest' }),
+      expect.objectContaining({ title: 'novatag' }),
+    ]);
+
+    const tagsIds = createdTags.map(tag => tag._id);
+    const updatedProjects = await Project.find({}).lean();
+    expect(updatedProjects).toEqual([
+      expect.objectContaining({
+        name: requestBody.name.toLowerCase(),
+        license: requestBody.license.toLowerCase(),
+        releaseDate: existingProject.releaseDate,
+        description: requestBody.description,
+        tags: expect.arrayContaining(tagsIds),
+      }),
+    ]);
+  });
 });
