@@ -1,8 +1,8 @@
-import Project, { projectProps } from "@schemas/Project";
+import Project, { IProject } from "@schemas/Project";
 import Tag from "@schemas/Tag";
 
 class ProjectService {
-  async create(body: projectProps): Promise<void> {
+  async create(body: IProject): Promise<void> {
     const { tags } = body;
 
     const existentTags = await Tag.find({

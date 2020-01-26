@@ -1,6 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-type Tag = Document & {};
+export interface ITag {
+  title: string,
+};
+type Tag = Document & ITag;
 
 const TagSchema = new Schema(
   {

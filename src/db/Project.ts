@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { ITag } from "@schemas/Tag";
 
-type Project = Document & {};
-export type projectProps = {
+export interface IProject {
   name: string,
   license: string,
   releaseDate: Date,
@@ -10,8 +10,9 @@ export type projectProps = {
   url?: string,
   repository?: string,
   hidden?: boolean,
-  tags?: string[],
-}
+  tags?: ITag["title"][],
+};
+type Project = Document & IProject;
 
 const ProjectSchema = new Schema(
   {

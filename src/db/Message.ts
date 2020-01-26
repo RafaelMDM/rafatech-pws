@@ -1,6 +1,11 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-type Message = Document & {};
+export interface IMessage {
+  subject: string,
+  body: string,
+  completedAt?: Date,
+}
+type Message = Document & IMessage;
 
 const MessageSchema = new Schema(
   {

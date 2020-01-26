@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Project from '@schemas/Project';
+import Project, { IProject } from '@schemas/Project';
 import Tag from '@schemas/Tag';
 import ProjectService from './ProjectService';
 
@@ -27,7 +27,7 @@ describe('Project Service', () => {
 
   it('should be able to create new Projects', async () => {
     const ps = new ProjectService();
-    const requestBody = {
+    const requestBody: IProject = {
       name: 'Teste',
       license: 'MIT',
       releaseDate: new Date(),
@@ -53,7 +53,7 @@ describe('Project Service', () => {
     ]);
   });
 
-  it('should not create duplicate tags', async () => {
+  it('should not create duplicate Tags', async () => {
     const ps = new ProjectService();
     const requestBody = {
       name: 'Teste',
