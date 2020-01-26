@@ -1,16 +1,17 @@
-# RafaMDMaker
+# Rafatech Personal Web Space
 
-## MVP
+## THIS IS CURRENTLY UNDER DEVELOPMENT!
 
 ### RF
 
 * Mostrar uma biografia do programador;
 * Listar projetos com imagens e links;
-  * Reações (awesome, good, neutral, bad)
-  * Comentários (considerar uma API como o Discus)
+  * CRUD
+  * !Reações (awesome, good, neutral, bad)
+  * !Comentários (considerar uma API como o Discus)
 * Blog
   * CRUD
-  * Comentários (considerar uma API como o Discus)
+  * !Comentários (considerar uma API como o Discus)
 * Enviar mensagem para o programador.
 
 ### RNF
