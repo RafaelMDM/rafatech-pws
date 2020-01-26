@@ -71,23 +71,3 @@ describe('Project Service', () => {
     ]);
   });
 });
-
-/*
-const date = new Date();
-    await Project.create({
-      name: 'Teste',
-      license: 'MIT',
-      releaseDate: date,
-    });
-    const list = await Project.find({});
-
-    expect(list).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: 'teste',
-          license: 'mit',
-          releaseDate: date,
-        }),
-      ])
-    );
-*/
