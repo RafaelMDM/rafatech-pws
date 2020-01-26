@@ -2,11 +2,11 @@ import Project, { IProject } from "@schemas/Project";
 import Tag from "@schemas/Tag";
 
 class ProjectService {
-  async create(projectData: IProject): Promise<void> {
+  async create(projectData: IProject): Promise<IProject> {
     const { tags } = projectData;
 
     const tagsIds = (tags instanceof Array) ? await this.addTags(tags) : null;
-    await Project.create({
+    return Project.create({
       ...projectData,
       tags: tagsIds,
     });
@@ -29,7 +29,9 @@ class ProjectService {
     });
   }
 
-  async remove() {}
+  async remove(id: string): Promise<void> {
+    await Project.findByIdAndDelete(id);
+  }
 
   async list() {}
 

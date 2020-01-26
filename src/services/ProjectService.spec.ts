@@ -79,8 +79,7 @@ describe('Project Service', () => {
       releaseDate: new Date(),
       tags: ['teste', 'jest'],
     };
-    await ps.create(existingProject);
-    const { _id: createdId } = await Project.findOne({ name: 'teste' });
+    const { _id: createdId } = await ps.create(existingProject);
     const requestBody = {
       _id: createdId,
       name: 'Teste',
@@ -108,5 +107,21 @@ describe('Project Service', () => {
         tags: expect.arrayContaining(tagsIds),
       }),
     ]);
+  });
+
+  it('should be able to delete Projects', async () => {
+    const ps = new ProjectService();
+    const existingProject = {
+      name: 'Teste',
+      license: 'MIT',
+      releaseDate: new Date(),
+      tags: ['teste', 'jest'],
+    };
+    const { _id: createdId } = await ps.create(existingProject);
+
+    await ps.remove(createdId);
+    const projectList = await Project.find({});
+
+    expect(projectList).toEqual([]);
   });
 });
