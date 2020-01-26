@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface ITag {
+  _id?: string,
   title: string,
 };
 type Tag = Document & ITag;

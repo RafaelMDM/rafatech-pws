@@ -2,9 +2,10 @@ import mongoose, { Document, Schema } from "mongoose";
 import { ITag } from "@schemas/Tag";
 
 export interface IProject {
+  _id?: string,
   name: string,
   license: string,
-  releaseDate: Date,
+  releaseDate?: Date,
   description?: string,
   images?: string[],
   url?: string,

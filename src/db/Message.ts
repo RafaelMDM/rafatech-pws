@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IMessage {
+  _id?: string,
   subject: string,
   body: string,
   completedAt?: Date,
