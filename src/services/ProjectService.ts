@@ -35,26 +35,27 @@ class ProjectService {
 
   async list() {}
 
-  private async addTags(tags: string[]): Promise<number[]> {
+  private async addTags(tags: string[]): Promise<string[]> {
     const existentTags = await Tag.find({
       title: {
         $in: tags,
       },
     }).lean();
-    const existentTagTitles = existentTags.map(tag => tag.title);
+    const existentTagsData = existentTags.reduce((data, tag) => {
+      data.ids.push(tag._id);
+      data.titles.push(tag.title);
+      return data;
+    }, { ids: [], titles: [] });
 
     const newTagsData = tags
-      .filter(tag => !existentTagTitles.includes(tag))
+      .filter(tag => !existentTagsData.titles.includes(tag))
       .map(tag => ({ title: tag }));
     const createdTags = await Tag.create(newTagsData);
-    const createdTagsIds: number[] = createdTags.map(tag => tag._id);
+    const createdTagsIds: string[] = createdTags.map(tag => tag._id);
 
-    return createdTagsIds;
+    return [ ...existentTagsData.ids, ...createdTagsIds ];
   }
 };
 
 export default ProjectService;
 
-function isValidProjectKey(key: string, project: IProject): key is keyof IProject {
-  return key in project;
-}

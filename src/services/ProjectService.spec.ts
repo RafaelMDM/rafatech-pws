@@ -70,6 +70,12 @@ describe('Project Service', () => {
       expect.objectContaining({ title: 'teste' }),
       expect.objectContaining({ title: 'jest' }),
     ]);
+
+    const tagsIds = createdTags.map(tag => tag._id);
+    const createdProjects = await Project.find({}).lean();
+    expect(createdProjects).toEqual([
+      expect.objectContaining({ tags: tagsIds }),
+    ]);
   });
 
   it('should be able to update existing Projects', async () => {
