@@ -131,4 +131,45 @@ describe('Project Service', () => {
 
     expect(projectList).toEqual([]);
   });
+
+  it('should return a list of Projects filtered by Tag', async () => {
+    const ps = new ProjectService();
+    const Projects = [{
+      name: 'React',
+      license: 'MIT',
+      releaseDate: new Date(),
+      tags: ['react'],
+    }, {
+      name: 'Node',
+      license: 'MIT',
+      releaseDate: new Date(),
+      tags: ['react', 'node'],
+    }, {
+      name: 'Python',
+      license: 'MIT',
+      releaseDate: new Date(),
+      tags: ['python'],
+    }];
+
+    for (const project of Projects) {
+      await ps.create(project);
+    }
+    const createdTags = await Tag.find({}).lean();
+    const filter1 = createdTags
+      .filter(tag => tag.title === 'react')
+      .map(tag => tag._id);
+    const list1 = await ps.list(filter1);
+    expect(list1).toEqual(expect.arrayContaining([
+      expect.objectContaining({ tags: expect.arrayContaining(filter1) }),
+    ]));
+
+    const filter2 = createdTags
+      .filter(tag => tag.title === 'python' || tag.title === 'node')
+      .map(tag => tag._id);
+    const list2 = await ps.list(filter2);
+    expect(list2).toEqual(expect.arrayContaining([
+      expect.objectContaining({ tags: expect.arrayContaining([filter2[0]]) }),
+      expect.objectContaining({ tags: expect.arrayContaining([filter2[1]]) }),
+    ]));
+  });
 });

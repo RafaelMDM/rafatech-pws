@@ -33,7 +33,15 @@ class ProjectService {
     await Project.findByIdAndDelete(id);
   }
 
-  async list() {}
+  async list(tags: string[]): Promise<IProject[]> {
+    const foundProjects = await Project.find({
+      tags: {
+        $in: tags,
+      },
+    });
+
+    return foundProjects;
+  }
 
   private async addTags(tags: string[]): Promise<string[]> {
     const existentTags = await Tag.find({
@@ -58,4 +66,3 @@ class ProjectService {
 };
 
 export default ProjectService;
-
