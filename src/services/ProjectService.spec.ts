@@ -13,6 +13,7 @@ describe('Project Service', () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     });
   });
 
