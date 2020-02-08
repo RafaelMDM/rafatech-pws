@@ -1,6 +1,6 @@
 import Tag, { ITag } from "@schemas/Tag";
 
-type tagSearchOptions = {
+type TagSearchOptions = {
   id?: string,
   title?: string,
 }
@@ -39,8 +39,8 @@ class TagService {
     return ids;
   }
 
-  static async list(by?: tagSearchOptions): Promise<ITag[]> {
-    const options: tagSearchOptions = {};
+  static async list(by?: TagSearchOptions): Promise<ITag[]> {
+    const options: TagSearchOptions = {};
     if (by) {
       if (by.id)  options.id = by.id;
       if (by.title)  options.title = by.title;
