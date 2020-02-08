@@ -19,14 +19,12 @@ const ProjectSchema = new Schema(
   {
     name: {
       type: String,
-      lowercase: true,
       trim: true,
       unique: true,
       required: true,
     },
     license: {
       type: String,
-      lowercase: true,
       trim: true,
       required: true,
     },

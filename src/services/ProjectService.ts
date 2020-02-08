@@ -1,11 +1,11 @@
 import Project, { IProject } from "@schemas/Project";
-import Tag from "@schemas/Tag";
+import TagService from "@services/TagService";
 
 class ProjectService {
   async create(projectData: IProject): Promise<IProject> {
     const { tags } = projectData;
 
-    const tagsIds = (tags instanceof Array) ? await this.addTags(tags) : null;
+    const tagsIds = (tags instanceof Array) ? await TagService.addTags(tags) : null;
     return Project.create({
       ...projectData,
       tags: tagsIds,
@@ -14,13 +14,9 @@ class ProjectService {
 
   async update(projectData: IProject): Promise<void> {
     const { tags } = projectData;
-    if (tags instanceof Array)  await this.addTags(tags);
+    if (tags instanceof Array)  await TagService.addTags(tags);
 
-    const tagsIds = await Tag.find({
-      title: {
-        $in: tags,
-      },
-    });
+    const tagsIds = await TagService.getTagsIds(tags);
     await Project.findByIdAndUpdate(projectData._id, {
       $set: {
         ...projectData,
@@ -33,35 +29,15 @@ class ProjectService {
     await Project.findByIdAndDelete(id);
   }
 
-  async list(tags: string[]): Promise<IProject[]> {
-    const foundProjects = await Project.find({
+  async list(tags?: string[]): Promise<IProject[]> {
+    const options = (tags instanceof Array) ? {
       tags: {
         $in: tags,
       },
-    });
+    } : {};
+    const foundProjects = await Project.find(options).lean();
 
     return foundProjects;
-  }
-
-  private async addTags(tags: string[]): Promise<string[]> {
-    const existentTags = await Tag.find({
-      title: {
-        $in: tags,
-      },
-    }).lean();
-    const existentTagsData = existentTags.reduce((data, tag) => {
-      data.ids.push(tag._id);
-      data.titles.push(tag.title);
-      return data;
-    }, { ids: [], titles: [] });
-
-    const newTagsData = tags
-      .filter(tag => !existentTagsData.titles.includes(tag))
-      .map(tag => ({ title: tag }));
-    const createdTags = await Tag.create(newTagsData);
-    const createdTagsIds: string[] = createdTags.map(tag => tag._id);
-
-    return [ ...existentTagsData.ids, ...createdTagsIds ];
   }
 };
 

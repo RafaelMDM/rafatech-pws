@@ -37,17 +37,17 @@ describe('Project Service', () => {
     await ps.create(requestBody);
 
     const createdTags = await Tag.find({}).lean();
-    expect(createdTags).toEqual([
+    expect(createdTags).toEqual(expect.arrayContaining([
       expect.objectContaining({ title: 'teste' }),
       expect.objectContaining({ title: 'jest' }),
-    ]);
+    ]));
 
     const tagsIds = createdTags.map(tag => tag._id);
     const createdProjects = await Project.find({}).lean();
     expect(createdProjects).toEqual([
       expect.objectContaining({
-        name: requestBody.name.toLowerCase(),
-        license: requestBody.license.toLowerCase(),
+        name: requestBody.name,
+        license: requestBody.license,
         releaseDate: requestBody.releaseDate,
         tags: tagsIds,
       }),
@@ -66,10 +66,10 @@ describe('Project Service', () => {
     await ps.create(requestBody);
 
     const createdTags = await Tag.find({}).lean();
-    expect(createdTags).toEqual([
+    expect(createdTags).toEqual(expect.arrayContaining([
       expect.objectContaining({ title: 'teste' }),
       expect.objectContaining({ title: 'jest' }),
-    ]);
+    ]));
 
     const tagsIds = createdTags.map(tag => tag._id);
     const createdProjects = await Project.find({}).lean();
@@ -97,18 +97,18 @@ describe('Project Service', () => {
     await ps.update(requestBody);
 
     const createdTags = await Tag.find({}).lean();
-    expect(createdTags).toEqual([
+    expect(createdTags).toEqual(expect.arrayContaining([
       expect.objectContaining({ title: 'teste' }),
       expect.objectContaining({ title: 'jest' }),
       expect.objectContaining({ title: 'novatag' }),
-    ]);
+    ]));
 
     const tagsIds = createdTags.map(tag => tag._id);
     const updatedProjects = await Project.find({}).lean();
     expect(updatedProjects).toEqual([
       expect.objectContaining({
-        name: requestBody.name.toLowerCase(),
-        license: requestBody.license.toLowerCase(),
+        name: requestBody.name,
+        license: requestBody.license,
         releaseDate: existingProject.releaseDate,
         description: requestBody.description,
         tags: expect.arrayContaining(tagsIds),
