@@ -12,7 +12,9 @@
   * CRUD
   * !Reações (awesome, good, neutral, bad)
   * !Comentários (considerar uma API como o Discus)
-* Enviar mensagem para o programador.
+* Enviar mensagem para o programador;
+  * Enviar por texto plano ou HTML;
+  * !Listar emails enviados
 
 ### RNF
 
