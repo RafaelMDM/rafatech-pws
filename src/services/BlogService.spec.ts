@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Post, { IPost } from "@schemas/Post";
+import Tag from "@schemas/Tag";
 import BlogService from "./BlogService";
 import TagService from "./TagService";
 
@@ -23,6 +24,7 @@ describe('Blog Service', () => {
 
   beforeEach(async () => {
     await Post.deleteMany({});
+    await Tag.deleteMany({});
   });
 
   it('should be able to create new Posts', async () => {
