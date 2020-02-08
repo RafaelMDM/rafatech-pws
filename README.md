@@ -8,9 +8,9 @@
 * Listar projetos com imagens e links;
   * CRUD
   * !Reações (awesome, good, neutral, bad)
-  * !Comentários (considerar uma API como o Discus)
 * Blog
   * CRUD
+  * !Reações (awesome, good, neutral, bad)
   * !Comentários (considerar uma API como o Discus)
 * Enviar mensagem para o programador.
 
