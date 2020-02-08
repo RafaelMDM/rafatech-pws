@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import Post, { IPost } from "@schemas/Post";
-import Tag from "@schemas/Tag";
 import BlogService from "./BlogService";
-import TagService from "./TagService";
 
 describe('Blog Service', () => {
   beforeAll(async () => {
@@ -22,9 +20,8 @@ describe('Blog Service', () => {
     await mongoose.connection.close();
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await Post.deleteMany({});
-    await Tag.deleteMany({});
   });
 
   it('should be able to create new Posts', async () => {
@@ -93,52 +90,5 @@ describe('Blog Service', () => {
     const projectList = await Post.find({});
 
     expect(projectList).toEqual([]);
-  });
-
-  it('should return a list of Projects filtered by Tag', async () => {
-    const bs = new BlogService();
-    const Projects = [{
-      author: 'RafaelMDM',
-      publishDate: new Date(),
-      published: true,
-      title: 'Primeiro Post',
-      body: 'Isso é um <strong>Post</strong>',
-      tags: ['tag1'],
-    }, {
-      author: 'RafaelMDM',
-      publishDate: new Date(),
-      published: true,
-      title: 'Segundo Post',
-      body: 'Isso é um <strong>Post</strong>',
-      tags: ['tag1', 'tag2'],
-    }, {
-      author: 'RafaelMDM',
-      publishDate: new Date(),
-      published: true,
-      title: 'Terceiro Post',
-      body: 'Isso é um <strong>Post</strong>',
-      tags: ['tag3'],
-    }];
-
-    for (const project of Projects) {
-      await bs.create(project);
-    }
-    const createdTags = await TagService.list({});
-    const filter1 = createdTags
-      .filter(tag => tag.title === 'tag1')
-      .map(tag => tag._id);
-    const list1 = await bs.list(filter1);
-    expect(list1).toEqual(expect.arrayContaining([
-      expect.objectContaining({ tags: expect.arrayContaining(filter1) }),
-    ]));
-
-    const filter2 = createdTags
-      .filter(tag => tag.title === 'tag3' || tag.title === 'tag2')
-      .map(tag => tag._id);
-    const list2 = await bs.list(filter2);
-    expect(list2).toEqual(expect.arrayContaining([
-      expect.objectContaining({ tags: expect.arrayContaining([filter2[0]]) }),
-      expect.objectContaining({ tags: expect.arrayContaining([filter2[1]]) }),
-    ]));
   });
 });

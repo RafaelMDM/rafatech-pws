@@ -21,7 +21,7 @@ describe('Project Service', () => {
     await mongoose.connection.close();
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await Project.deleteMany({});
     await Tag.deleteMany({});
   });
@@ -42,14 +42,16 @@ describe('Project Service', () => {
       expect.objectContaining({ title: 'jest' }),
     ]));
 
-    const tagsIds = createdTags.map(tag => tag._id);
+    const tagsIds = createdTags
+      .filter(tag => tag.title === 'teste' || tag.title === 'jest')
+      .map(tag => tag._id);
     const createdProjects = await Project.find({}).lean();
     expect(createdProjects).toEqual([
       expect.objectContaining({
         name: requestBody.name,
         license: requestBody.license,
         releaseDate: requestBody.releaseDate,
-        tags: tagsIds,
+        tags: expect.arrayContaining(tagsIds),
       }),
     ]);
   });
@@ -73,9 +75,9 @@ describe('Project Service', () => {
 
     const tagsIds = createdTags.map(tag => tag._id);
     const createdProjects = await Project.find({}).lean();
-    expect(createdProjects).toEqual([
-      expect.objectContaining({ tags: tagsIds }),
-    ]);
+    expect(createdProjects).toEqual(expect.arrayContaining([
+      expect.objectContaining({ tags: expect.arrayContaining(tagsIds) }),
+    ]));
   });
 
   it('should be able to update existing Projects', async () => {
@@ -105,7 +107,7 @@ describe('Project Service', () => {
 
     const tagsIds = createdTags.map(tag => tag._id);
     const updatedProjects = await Project.find({}).lean();
-    expect(updatedProjects).toEqual([
+    expect(updatedProjects).toEqual(expect.arrayContaining([
       expect.objectContaining({
         name: requestBody.name,
         license: requestBody.license,
@@ -113,7 +115,7 @@ describe('Project Service', () => {
         description: requestBody.description,
         tags: expect.arrayContaining(tagsIds),
       }),
-    ]);
+    ]));
   });
 
   it('should be able to delete Projects', async () => {
