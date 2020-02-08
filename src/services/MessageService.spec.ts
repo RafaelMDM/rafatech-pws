@@ -4,6 +4,8 @@ import MessageService from './MessageService';
 import dotenv from "dotenv-safe";
 
 describe('Message Service', () => {
+  jest.setTimeout(20000);
+
   beforeAll(async () => {
     if (!process.env.MONGO_URL) {
       throw new Error('MongoDB server not initialized');
