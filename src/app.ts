@@ -1,14 +1,40 @@
-import express from "express";
 import dotenv from "dotenv-safe";
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+
 import routes from "./routes";
+dotenv.config();
 
-const env = dotenv.config();
-const PORT = (process.env.NODE_ENV === 'production') ? process.env.PORT : 3001;
-const app = express();
+class App {
+  public express: express.Application;
 
-app.use(express.json());
-app.use(routes);
+  public constructor () {
+    this.express = express();
 
-app.listen(PORT);
+    this.middlewares();
+    this.database();
+    this.routes();
+  }
 
-export default app;
+  private middlewares (): void {
+    this.express.use(express.json());
+    this.express.use(cors());
+  }
+
+  private database (): void {
+    const db_server = (process.env.NODE_ENV === 'production') ? process.env.MONGO_SRV : 'localhost';
+    mongoose.connect(`mongodb://${db_server}:27017/rafatech-pws`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    });
+  }
+
+  private routes (): void {
+    this.express.use(routes);
+  }
+}
+
+export default new App().express;
