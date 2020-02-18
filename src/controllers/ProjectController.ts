@@ -1,54 +1,66 @@
 import { Request, Response } from "express";
+import { IProject } from "../db/Project";
 import ProjectService from "../services/ProjectService";
 
 class ProjectController {
-  async create(req: Request, res: Response, next: any) {
+  async create(req: Request, res: Response, next: any): Promise<Response> {
     try {
-      if (Object.entries(req.body).length === 0)  return next();
+      if (!isProject(req.body))  return next();
 
       const project = await ProjectService.create(req.body);
-      res.status(201).send(project);
+      return res.status(201).send(project);
     } catch (err) {
       console.error(err);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   }
 
-  async list(req: Request, res: Response) {
+  async list(req: Request, res: Response): Promise<Response> {
     try {
-      const projects = await ProjectService.list(req.body?.tags);
+      const projects = await ProjectService.list(req.body.tags);
 
-      res.status(200).send(projects);
+      return res.status(200).send(projects);
     } catch (err) {
       console.error(err);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   }
 
-  async update(req: Request, res: Response, next: any) {
+  async update(req: Request, res: Response, next: any): Promise<Response> {
     try {
-      if (Object.entries(req.body).length === 0)  return next();
+      const { id } = req.body;
+      if (id)  req.body._id = id;
+      if (!isProject(req.body))  return next();
 
       const changed = await ProjectService.update(req.body);
       if (changed)  return res.sendStatus(200);
-      res.sendStatus(204);
+      return res.sendStatus(204);
     } catch (err) {
       console.error(err);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   }
 
-  async remove(req: Request, res: Response, next: any) {
+  async remove(req: Request, res: Response, next: any): Promise<Response> {
     try {
-      if (!req.body?.id)  return next();
+      const { id } = req.body;
+      if (id)  req.body._id = id;
+      if (!isProject(req.body))  return next();
 
-      await ProjectService.remove(req.body.id);
-      res.sendStatus(200);
+      await ProjectService.remove(req.body._id);
+      return res.sendStatus(200);
     } catch (err) {
       console.error(err);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   }
+}
+
+function isProject(object: any): object is IProject {
+  return '_id' in object || (
+    'name' in object &&
+    'license' in object
+  )
 }
 
 export default new ProjectController();
