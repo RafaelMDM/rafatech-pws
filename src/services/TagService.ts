@@ -7,6 +7,7 @@ type TagSearchOptions = {
 
 class TagService {
   static async addTags(tags: string[]): Promise<string[]> {
+    tags = tags.map(tag => tag.toLowerCase());
     const existentTags = await Tag.find({
       title: {
         $in: tags,
@@ -23,7 +24,7 @@ class TagService {
       .map(tag => ({ title: tag }));
 
     const createdTags = await Tag.create(newTagsData);
-    const createdTagsIds: string[] = createdTags.map(tag => tag._id);
+    const createdTagsIds: string[] = (createdTags) ? createdTags.map(tag => tag._id) : [];
 
     return [ ...existentTagsData.ids, ...createdTagsIds ];
   }

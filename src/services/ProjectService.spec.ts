@@ -93,7 +93,8 @@ describe('Project Service', () => {
       description: 'Testando atualização de projeto',
       tags: ['teste', 'jest', 'novaTag'],
     };
-    await ps.update(requestBody);
+    const changed = await ps.update(requestBody);
+    expect(changed).toEqual(true);
 
     const createdTags = await Tag.find({}).lean();
     expect(createdTags).toEqual(expect.arrayContaining([

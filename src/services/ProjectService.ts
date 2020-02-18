@@ -12,17 +12,26 @@ class ProjectService {
     });
   }
 
-  async update(projectData: IProject): Promise<void> {
+  async update(projectData: IProject): Promise<boolean> {
     const { tags } = projectData;
-    if (tags instanceof Array)  await TagService.addTags(tags);
+    if (tags instanceof Array) {
+      await TagService.addTags(tags);
+      const tagsIds = await TagService.getTagsIds(tags);
+      const project = await Project.findByIdAndUpdate(projectData._id, {
+        $set: {
+          ...projectData,
+          tags: tagsIds,
+        }
+      });
+      return !!project;
+    }
 
-    const tagsIds = await TagService.getTagsIds(tags);
-    await Project.findByIdAndUpdate(projectData._id, {
+    const project = await Project.findByIdAndUpdate(projectData._id, {
       $set: {
         ...projectData,
-        tags: tagsIds
       }
     });
+    return !!project;
   }
 
   async remove(id: string): Promise<void> {
