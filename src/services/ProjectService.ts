@@ -41,4 +41,4 @@ class ProjectService {
   }
 };
 
-export default ProjectService;
+export default new ProjectService();

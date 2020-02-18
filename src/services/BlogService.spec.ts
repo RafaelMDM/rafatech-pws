@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Post, { IPost } from "@schemas/Post";
-import BlogService from "./BlogService";
+import bs from "./BlogService";
 
 describe('Blog Service', () => {
   beforeAll(async () => {
@@ -25,7 +25,6 @@ describe('Blog Service', () => {
   });
 
   it('should be able to create new Posts', async () => {
-    const bs = new BlogService();
     const requestData: IPost = {
       author: 'RafaelMDM',
       publishDate: new Date(),
@@ -48,7 +47,6 @@ describe('Blog Service', () => {
   });
 
   it('should be able to update existing Posts', async () => {
-    const bs = new BlogService();
     const existingProject: IPost = {
       author: 'RafaelMDM',
       publishDate: new Date(),
@@ -76,7 +74,6 @@ describe('Blog Service', () => {
   });
 
   it('should be able to delete Posts', async () => {
-    const bs = new BlogService();
     const existingProject = {
       author: 'RafaelMDM',
       publishDate: new Date(),

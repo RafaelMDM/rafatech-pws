@@ -58,4 +58,4 @@ class MessageService {
   }
 }
 
-export default MessageService;
+export default new MessageService();

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import Project, { IProject } from '@schemas/Project';
 import Tag from '@schemas/Tag';
-import ProjectService from './ProjectService';
+import ps from './ProjectService';
 
 describe('Project Service', () => {
   beforeAll(async () => {
@@ -27,7 +27,6 @@ describe('Project Service', () => {
   });
 
   it('should be able to create new Projects', async () => {
-    const ps = new ProjectService();
     const requestBody: IProject = {
       name: 'Teste',
       license: 'MIT',
@@ -57,7 +56,6 @@ describe('Project Service', () => {
   });
 
   it('should not create duplicate Tags', async () => {
-    const ps = new ProjectService();
     const requestBody = {
       name: 'Teste',
       license: 'MIT',
@@ -81,7 +79,6 @@ describe('Project Service', () => {
   });
 
   it('should be able to update existing Projects', async () => {
-    const ps = new ProjectService();
     const existingProject = {
       name: 'Teste',
       license: 'MIT',
@@ -119,7 +116,6 @@ describe('Project Service', () => {
   });
 
   it('should be able to delete Projects', async () => {
-    const ps = new ProjectService();
     const existingProject = {
       name: 'Teste',
       license: 'MIT',
@@ -135,7 +131,6 @@ describe('Project Service', () => {
   });
 
   it('should return a list of Projects filtered by Tag', async () => {
-    const ps = new ProjectService();
     const Projects = [{
       name: 'React',
       license: 'MIT',

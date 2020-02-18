@@ -41,4 +41,4 @@ class BlogService {
   }
 }
 
-export default BlogService;
+export default new BlogService();
