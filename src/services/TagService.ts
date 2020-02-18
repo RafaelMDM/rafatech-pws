@@ -1,4 +1,4 @@
-import Tag, { ITag } from "@schemas/Tag";
+import Tag, { ITag } from "../db/Tag";
 
 type TagSearchOptions = {
   id?: string,

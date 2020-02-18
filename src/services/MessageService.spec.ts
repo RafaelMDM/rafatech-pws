@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Message, { IMessage } from "@schemas/Message";
+import Message, { IMessage } from "../db/Message";
 import ms from './MessageService';
 import dotenv from "dotenv-safe";
 
@@ -30,7 +30,7 @@ describe('Message Service', () => {
   it('should send an email', async () => {
     dotenv.config();
     const reqBody: IMessage = {
-      from: 'Teste &lt;teste@teste.com&gt;',
+      from: 'Teste &lt;teste../teste.com&gt;',
       subject: 'Testando envio de email!',
       body: 'Isto é um teste.<br><strong>TESTANDO!</strong>',
     };
@@ -44,7 +44,7 @@ describe('Message Service', () => {
   it('should be able to filter emails', async () => {
     dotenv.config();
     const reqBody: IMessage = {
-      from: 'Teste &lt;teste@teste.com&gt;',
+      from: 'Teste &lt;teste../teste.com&gt;',
       subject: 'Testando envio de email!',
       body: 'Isto é um teste.<br><strong>TESTANDO!</strong>',
     };

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Post, { IPost } from "@schemas/Post";
+import Post, { IPost } from "../db/Post";
 import bs from "./BlogService";
 
 describe('Blog Service', () => {

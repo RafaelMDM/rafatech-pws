@@ -1,4 +1,4 @@
-import Message, { IMessage } from "@schemas/Message";
+import Message, { IMessage } from "../db/Message";
 import nodemailer from "nodemailer";
 
 type MessageResponse = {

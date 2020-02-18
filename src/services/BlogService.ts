@@ -1,5 +1,5 @@
-import Post, { IPost } from "@schemas/Post";
-import TagService from "@services/TagService";
+import Post, { IPost } from "../db/Post";
+import TagService from "../services/TagService";
 
 class BlogService {
   async create(postData: IPost): Promise<IPost> {

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import Project, { IProject } from '@schemas/Project';
-import Tag from '@schemas/Tag';
+import Project, { IProject } from '../db/Project';
+import Tag from '../db/Tag';
 import ps from './ProjectService';
 
 describe('Project Service', () => {

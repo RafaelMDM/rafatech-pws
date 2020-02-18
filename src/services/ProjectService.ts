@@ -1,5 +1,5 @@
-import Project, { IProject } from "@schemas/Project";
-import TagService from "@services/TagService";
+import Project, { IProject } from "../db/Project";
+import TagService from "../services/TagService";
 
 class ProjectService {
   async create(projectData: IProject): Promise<IProject> {

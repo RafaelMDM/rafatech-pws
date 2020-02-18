@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { ITag } from "@schemas/Tag";
+import { ITag } from "../db/Tag";
 
 export interface IPost {
   _id?: string,
