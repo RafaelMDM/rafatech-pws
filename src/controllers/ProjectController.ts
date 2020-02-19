@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { IProject } from "../db/Project";
 import ProjectService from "../services/ProjectService";
 
 class ProjectController {
-  async create(req: Request, res: Response, next: any): Promise<Response> {
+  async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       if (!isProject(req.body))  return next();
 
@@ -26,7 +26,7 @@ class ProjectController {
     }
   }
 
-  async update(req: Request, res: Response, next: any): Promise<Response> {
+  async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const { id } = req.body;
       if (id)  req.body._id = id;
@@ -41,7 +41,7 @@ class ProjectController {
     }
   }
 
-  async remove(req: Request, res: Response, next: any): Promise<Response> {
+  async remove(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const { id } = req.body;
       if (id)  req.body._id = id;
