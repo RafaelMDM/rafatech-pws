@@ -23,8 +23,8 @@ class App {
   }
 
   private database (): void {
-    const db_server = (process.env.NODE_ENV === 'production') ? process.env.MONGO_SRV : 'localhost';
-    mongoose.connect(`mongodb://${db_server}:27017/rafatech-pws`, {
+    const db_server = (process.env.NODE_ENV === 'production') ? process.env.MONGO_SRV : 'mongodb://localhost:27017/rafatech-pws';
+    mongoose.connect(db_server, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
