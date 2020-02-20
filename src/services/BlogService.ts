@@ -12,21 +12,25 @@ class BlogService {
     });
   }
 
-  async update(postData: IPost): Promise<void> {
+  async update(postData: IPost): Promise<IPost> {
     const { tags } = postData;
-    if (tags instanceof Array)  await TagService.addTags(tags);
+    const postValues = {
+      ...postData,
+    };
+    if (tags instanceof Array) {
+      await TagService.addTags(tags);
+      const tagsIds = await TagService.getTagsIds(tags);
+      postValues.tags = tagsIds;
+    }
 
-    const tagsIds = await TagService.getTagsIds(tags);
-    await Post.findByIdAndUpdate(postData._id, {
-      $set: {
-        ...postData,
-        tags: tagsIds
-      }
-    });
+    const post = await Post.findByIdAndUpdate(postData._id, {
+      $set: postValues,
+    }, { new: true });
+    return post;
   }
 
-  async remove(id: string): Promise<void> {
-    await Post.findByIdAndDelete(id);
+  async remove(id: string): Promise<IPost> {
+    return await Post.findByIdAndDelete(id);
   }
 
   async list(tags?: string[]): Promise<IPost[]> {
