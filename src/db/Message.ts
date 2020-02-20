@@ -2,9 +2,9 @@ import mongoose, { Document, Schema } from "mongoose";
 
 export interface IMessage {
   _id?: string,
-  from?: string,
-  subject?: string,
-  body?: string,
+  from: string,
+  subject: string,
+  body: string,
   completedAt?: Date,
 }
 type Message = Document & IMessage;
@@ -34,4 +34,4 @@ const MessageSchema = new Schema(
   },
 );
 
-export default mongoose.model<Message>('Project', MessageSchema);
+export default mongoose.model<Message>('Message', MessageSchema);

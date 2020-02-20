@@ -7,6 +7,7 @@ describe('Message Service', () => {
   jest.setTimeout(20000);
 
   beforeAll(async () => {
+    dotenv.config();
     if (!process.env.MONGO_URL) {
       throw new Error('MongoDB server not initialized');
     }
@@ -28,7 +29,6 @@ describe('Message Service', () => {
   });
 
   it('should send an email', async () => {
-    dotenv.config();
     const reqBody: IMessage = {
       from: 'Teste &lt;teste../teste.com&gt;',
       subject: 'Testando envio de email!',
@@ -42,7 +42,6 @@ describe('Message Service', () => {
   });
 
   it('should be able to filter emails', async () => {
-    dotenv.config();
     const reqBody: IMessage = {
       from: 'Teste &lt;teste../teste.com&gt;',
       subject: 'Testando envio de email!',
