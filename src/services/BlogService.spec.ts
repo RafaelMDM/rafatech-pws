@@ -57,18 +57,21 @@ describe('Blog Service', () => {
     const { _id: createdId } = await bs.create(existingProject);
     const requestBody = {
       _id: createdId,
+      author: 'José',
+      title: 'Primeiro Post v2',
       body: `Post modificado em: ${new Date().toLocaleDateString()}`,
     };
-    await bs.update(requestBody);
+    const changed = await bs.update(requestBody);
+    expect(changed).toBeTruthy();
 
     const updatedPosts = await Post.find({}).lean();
     expect(updatedPosts).toEqual([
       expect.objectContaining({
-        author: existingProject.author,
+        author: requestBody.author,
+        title: requestBody.title,
+        body: requestBody.body,
         publishDate: existingProject.publishDate,
         published: existingProject.published,
-        title: existingProject.title,
-        body: requestBody.body,
       }),
     ]);
   });

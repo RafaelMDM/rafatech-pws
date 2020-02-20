@@ -3,10 +3,10 @@ import { ITag } from "../db/Tag";
 
 export interface IPost {
   _id?: string,
-  author?: string,
+  author: string,
+  title: string,
   publishDate?: Date,
   published?: boolean,
-  title?: string,
   thumbnail?: string,
   body?: string,
   tags?: ITag["title"][],
@@ -20,18 +20,19 @@ const PostSchema = new Schema(
       trim: true,
       required: true,
     },
-    publishDate: {
-      type: Date,
-      required: true,
-    },
-    published: {
-      type: Boolean,
-      default: true,
-    },
     title: {
       type: String,
       trim: true,
       required: true,
+    },
+    publishDate: {
+      type: Date,
+      required: true,
+      default: new Date(),
+    },
+    published: {
+      type: Boolean,
+      default: true,
     },
     thumbnail: {
       type: String,
@@ -49,6 +50,9 @@ const PostSchema = new Schema(
         ref: 'Tag'
       },
     ],
+  },
+  {
+    timestamps: true,
   },
 );
 
