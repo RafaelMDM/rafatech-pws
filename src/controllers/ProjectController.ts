@@ -32,8 +32,8 @@ class ProjectController {
       if (id)  req.body._id = id;
       if (!isProject(req.body))  return next();
 
-      const changed = await ProjectService.update(req.body);
-      if (changed)  return res.sendStatus(200);
+      const changedProject = await ProjectService.update(req.body);
+      if (changedProject)  return res.status(200).send(changedProject);
       return res.sendStatus(204);
     } catch (err) {
       console.error(err);
@@ -47,8 +47,9 @@ class ProjectController {
       if (id)  req.body._id = id;
       if (!isProject(req.body))  return next();
 
-      await ProjectService.remove(req.body._id);
-      return res.sendStatus(200);
+      const removedProject = await ProjectService.remove(req.body._id);
+      if (removedProject)  return res.status(200).send(removedProject);
+      return res.sendStatus(204);
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
