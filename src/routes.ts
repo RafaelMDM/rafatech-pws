@@ -5,10 +5,6 @@ import MessageController from "./controllers/MessageController";
 
 const routes = Router();
 
-routes.get('/', (req, res) => {
-  res.send('Hello, world!');
-});
-
 routes.get('/projects', ProjectController.list);
 routes.post('/projects', ProjectController.create);
 routes.put('/projects', ProjectController.update);
