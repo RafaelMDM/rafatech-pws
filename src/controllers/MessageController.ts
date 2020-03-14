@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IMessage } from "../db/Message";
+import { successResponse, failureResponse } from '../utils';
 import MessageService from "../services/MessageService";
 
 class MessageController {
@@ -8,10 +9,11 @@ class MessageController {
       if (!isMessage(req.body))  return next();
 
       const message = await MessageService.send(req.body);
-      return res.status(201).send(message);
+      const report = successResponse(message);
+      return res.status(201).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 
@@ -19,16 +21,17 @@ class MessageController {
     try {
       const messages = await MessageService.list(req.body.query);
 
-      return res.status(200).send(messages);
+      const report = successResponse(messages);
+      return res.status(200).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 }
 
 function isMessage(object: any): object is IMessage {
-  return '_id' in object || (
+  return 'id' in object || (
     'from' in object &&
     'subject' in object &&
     'body' in object

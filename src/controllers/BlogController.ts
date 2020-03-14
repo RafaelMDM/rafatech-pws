@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IPost } from "../db/Post";
+import { successResponse, failureResponse } from '../utils';
 import BlogService from "../services/BlogService";
 
 class BlogController {
@@ -8,10 +9,11 @@ class BlogController {
       if (!isPost(req.body))  return next();
 
       const post = await BlogService.create(req.body);
-      return res.status(201).send(post);
+      const report = successResponse(post);
+      return res.status(201).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 
@@ -19,46 +21,47 @@ class BlogController {
     try {
       const posts = await BlogService.list(req.body.tags);
 
-      return res.status(200).send(posts);
+      const report = successResponse(posts);
+      return res.status(200).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 
   async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id } = req.body;
-      if (id)  req.body._id = id;
       if (!isPost(req.body))  return next();
+      req.body._id = req.body.id;
 
       const changedPost = await BlogService.update(req.body);
-      if (changedPost)  return res.status(200).send(changedPost);
-      return res.sendStatus(204);
+      const report = successResponse(changedPost);
+      const status = (changedPost) ? 200 : 204;
+      return res.status(status).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 
   async remove(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id } = req.body;
-      if (id)  req.body._id = id;
       if (!isPost(req.body))  return next();
+      const { id } = req.body;
 
-      const removedPost = await BlogService.remove(req.body._id);
-      if (removedPost)  return res.status(200).send(removedPost);
-      return res.sendStatus(204);
+      const removedPost = await BlogService.remove(id);
+      const report = successResponse(removedPost);
+      const status = (removedPost) ? 200 : 204;
+      return res.status(status).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 }
 
-function isPost(object: any): object is IPost {
-  return '_id' in object || (
+function isPost(object: any): object is IPost & { id: string } {
+  return 'id' in object || (
     'author' in object &&
     'title' in object
   )

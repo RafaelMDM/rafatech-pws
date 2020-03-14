@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { IProject } from "../db/Project";
+import { successResponse, failureResponse } from '../utils';
 import ProjectService from "../services/ProjectService";
 
 class ProjectController {
@@ -8,10 +9,11 @@ class ProjectController {
       if (!isProject(req.body))  return next();
 
       const project = await ProjectService.create(req.body);
-      return res.status(201).send(project);
+      const report = successResponse(project);
+      return res.status(201).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 
@@ -19,46 +21,47 @@ class ProjectController {
     try {
       const projects = await ProjectService.list(req.body.tags);
 
-      return res.status(200).send(projects);
+      const report = successResponse(projects);
+      return res.status(201).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 
   async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id } = req.body;
-      if (id)  req.body._id = id;
       if (!isProject(req.body))  return next();
+      req.body._id = req.body.id;
 
       const changedProject = await ProjectService.update(req.body);
-      if (changedProject)  return res.status(200).send(changedProject);
-      return res.sendStatus(204);
+      const report = successResponse(changedProject);
+      const status = (changedProject) ? 200 : 204;
+      return res.status(status).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 
   async remove(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id } = req.body;
-      if (id)  req.body._id = id;
       if (!isProject(req.body))  return next();
+      const { id } = req.body;
 
-      const removedProject = await ProjectService.remove(req.body._id);
-      if (removedProject)  return res.status(200).send(removedProject);
-      return res.sendStatus(204);
+      const removedProject = await ProjectService.remove(id);
+      const report = successResponse(removedProject);
+      const status = (removedProject) ? 200 : 204;
+      return res.status(status).send(report);
     } catch (err) {
-      console.error(err);
-      return res.sendStatus(500);
+      const report = failureResponse(err.message);
+      return res.status(500).send(report);
     }
   }
 }
 
-function isProject(object: any): object is IProject {
-  return '_id' in object || (
+function isProject(object: any): object is IProject & { id: string } {
+  return 'id' in object || (
     'name' in object &&
     'license' in object
   )
