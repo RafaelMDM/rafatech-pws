@@ -4,7 +4,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 
 import tokenVerifier from "./controllers/TokenController";
-import routes from "./routes";
+import secureRoutes from "./routes/secure";
+import publicRoutes from "./routes/public";
 dotenv.config();
 
 class App {
@@ -21,7 +22,6 @@ class App {
   private middlewares (): void {
     this.express.use(express.json());
     this.express.use(cors());
-    this.express.use(tokenVerifier);
   }
 
   private database (): void {
@@ -35,7 +35,9 @@ class App {
   }
 
   private routes (): void {
-    this.express.use(routes);
+    this.express.use(publicRoutes);
+    this.express.use(tokenVerifier);
+    this.express.use(secureRoutes);
   }
 }
 
