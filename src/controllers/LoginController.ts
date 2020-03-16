@@ -34,7 +34,7 @@ class LoginController {
     }
 
     UserSchema.findOne({ username: req.body.username }, (err, user) => {
-      if (err || !user.validatePassword(req.body.password)) {
+      if (!user || !user.validatePassword(req.body.password)) {
         const report = failureResponse('Incorrect username or password');
         return res.status(400).send(report);
       }
@@ -43,6 +43,8 @@ class LoginController {
         username: user.username,
         password: user.password,
       }, process.env.API_SECRET);
+
+      req.session.token = token;
       res.status(200).send(
         successResponse({ token })
       );
@@ -51,6 +53,17 @@ class LoginController {
       user.loggedIn = true;
       user.save();
     });
+  }
+
+  refresh(req: Request, res: Response): Response {
+    const { token } = req.session;
+    if (!token) {
+      const report = failureResponse('Session has expired');
+      return res.status(400).send(report);
+    }
+
+    const report = successResponse({ token });
+    res.status(200).send(report);
   }
 }
 

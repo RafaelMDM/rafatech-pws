@@ -5,8 +5,9 @@ import LoginController from "../controllers/LoginController";
 
 const routes = Router();
 
-routes.post('/register', LoginController.register);
 routes.post('/login', LoginController.login);
+routes.post('/refresh', LoginController.refresh);
+routes.post('/register', LoginController.register);
 
 routes.get('/projects', ProjectController.list);
 

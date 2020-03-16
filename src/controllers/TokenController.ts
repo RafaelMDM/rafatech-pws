@@ -10,6 +10,10 @@ tokenVerifier.all('*', verifyToken);
 export default tokenVerifier;
 
 function verifyToken(req: Request, res: Response, next: NextFunction): Response | void {
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
   const acessToken = req.headers['x-access-token'];
   const token = (acessToken instanceof Array) ? acessToken[0] : acessToken;
   if (!token)  return res.status(403).send(failureResponse('No token provided'));

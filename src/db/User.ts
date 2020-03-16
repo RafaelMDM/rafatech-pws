@@ -1,5 +1,5 @@
-import mongoose, { Document, Schema } from "mongoose";
-import bcrypt from "bcrypt";
+import mongoose, { Document, Schema } from 'mongoose';
+import bcrypt from 'bcrypt';
 
 interface IUser {
   username: string,
@@ -29,7 +29,8 @@ const UserSchema = new Schema(
       default: false,
     },
     lastLogin: {
-      type: Date
+      type: Date,
+      default: new Date(),
     },
   },
   {

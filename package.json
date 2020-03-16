@@ -31,16 +31,19 @@
     "sucrase": "^3.12.1",
     "ts-jest": "^25.0.0",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.0-dev.20200315"
   },
   "dependencies": {
+    "@types/express-session": "^1.17.0",
     "bcrypt": "^4.0.1",
     "cors": "^2.8.5",
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.9",
-    "nodemailer": "^6.4.2"
+    "nodemailer": "^6.4.2",
+    "universal-cookie-express": "^4.0.3"
   },
   "engines": {
     "node": "12.12.0"
